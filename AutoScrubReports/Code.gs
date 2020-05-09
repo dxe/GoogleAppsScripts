@@ -1,3 +1,19 @@
+/**
+ * In order for the `main` function in this script to succeed, you will need to
+ * specify the target folder ID and the number of days after which to delete
+ * files. To get the target folder ID, open the target folder in Google Drive
+ * and copy the last part of the URL path.
+ * 
+ * Select File > Project Properties in the Google Apps Script editor. Click on
+ * the "Script properties" tab and add the following properties:
+ *
+ * Property: TARGET_FOLDER_ID
+ * Value: [The ID you obtained in the previous step]
+ *
+ * Property: AFTER_DAYS_ELAPSED
+ * Value: [Number of days]
+ */
+
 /* Create a trigger that runs the `main` function every day between 12-1am
  */
 function createDailyTrigger() {
