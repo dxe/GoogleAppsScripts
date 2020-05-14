@@ -11,25 +11,24 @@ AutoScrubReports is a Google Apps Script that removes access to files in a desig
 
 To configure the script, you will need the folder ID. To get the target folder ID, open the target folder in Google Drive and copy the last part of the URL path.
 
- 1. Clone the repository to your machine.
- 2. Copy the contents of the [Code.gs](./Code.gs) file to your clipboard.
- 3. Open the [Google Apps Script dashboard](https://script.google.com/home).
- 4. Click the *New project* button. An editor will open in a new tab.
- 5. Clear the contents of the editor and paste the contents of Code<span/>.gs.
- 6. Click on the Save icon or press Ctrl+S.
- 7. Enter the project name "AutoScrubReports" when prompted and click OK to save.
- 8. To add the configuration, click on *File* in the editor menu bar and select *Project Properties*.
- 9. Click on the *Script properties* tab and add the following properties:
+ 1. Copy the contents of [Code.gs](./Code.gs) to your clipboard.
+ 2. Open the [Google Apps Script dashboard](https://script.google.com/home).
+ 3. Click the *New project* button. An editor will open in a new tab.
+ 4. Clear the contents of the editor and paste the contents of Code<span/>.gs.
+ 5. Click on the Save icon or press Ctrl+S.
+ 6. Enter the project name "AutoScrubReports" when prompted and click OK to save.
+ 7. To add the configuration, click on *File* in the editor menu bar and select *Project Properties*.
+ 8. Click on the *Script properties* tab and add the following properties:
 
   | Property           | Value                                           |
   |--------------------|-------------------------------------------------|
   | TARGET_FOLDER_ID   | [The ID you obtained from the Google Drive URL] |
   | AFTER_DAYS_ELAPSED | [Number of days]                                |
- 10. Click on the *Select function* dropdown in the editor toolbar.
+ 9. Click on the *Select function* dropdown in the editor toolbar.
      - If you want to add the script as a daily trigger, select the *createDailyTrigger* option.
      - If you only want to run the script once, select *main*.
- 11. Click the ▶ button to run the selected function.
- 12. To verify that the trigger has been added, click *Edit* in the editor menu bar and select *Current project's triggers*. 
+ 10. Click the ▶ button to run the selected function.
+ 11. To verify that the trigger has been added, click *Edit* in the editor menu bar and select *Current project's triggers*. 
 
 ## Uninstallation
 
