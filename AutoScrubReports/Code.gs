@@ -67,7 +67,7 @@ function* getOldFiles(folderId, afterDaysElapsed) {
   const folder = DriveApp.getFolderById(folderId);
   const files = folder.getFiles();
   while (files.hasNext()) {
-    file = files.next();
+    const file = files.next();
     const dateCreated = file.getDateCreated();
     const daysElapsed = (now.getTime() - dateCreated.getTime()) / MILLIS_PER_DAY;
     if (daysElapsed >= afterDaysElapsed) {
