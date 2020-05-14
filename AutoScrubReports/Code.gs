@@ -3,7 +3,7 @@
  * specify the target folder ID and the number of days after which to delete
  * files. To get the target folder ID, open the target folder in Google Drive
  * and copy the last part of the URL path.
- * 
+ *
  * Select File > Project Properties in the Google Apps Script editor. Click on
  * the "Script properties" tab and add the following properties:
  *
@@ -29,10 +29,10 @@ function main() {
   const afterDaysElapsed = scriptProperties.getProperty('AFTER_DAYS_ELAPSED');
 
   const oldFiles = getOldFiles(targetFolderId, afterDaysElapsed);
-  for (let file of oldFiles) {
+  for (const file of oldFiles) {
     removeAccess(file);
   }
-}  
+}
 
 /* Remove all editors, commenters, and viewers who are not the owner from the
  * file. Set permissions to only people explicitly added can access. Then, move
