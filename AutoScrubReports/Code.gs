@@ -24,28 +24,54 @@ function createDailyTrigger() {
 }
 
 function main() {
-  var scriptProperties = PropertiesService.getScriptProperties();
-  var targetFolderId = scriptProperties.getProperty('TARGET_FOLDER_ID');
-  var afterDaysElapsed = scriptProperties.getProperty('AFTER_DAYS_ELAPSED');
-  removeOldFiles(targetFolderId, afterDaysElapsed);
+  const scriptProperties = PropertiesService.getScriptProperties();
+  const targetFolderId = scriptProperties.getProperty('TARGET_FOLDER_ID');
+  const afterDaysElapsed = scriptProperties.getProperty('AFTER_DAYS_ELAPSED');
+
+  const oldFiles = getOldFiles(targetFolderId, afterDaysElapsed);
+  for (let file of oldFiles) {
+    removeAccess(file);
+  }
 }  
 
-/* Remove all files older than `afterDaysElapsed` days inside the folder
- * specified by `folderId`.
+/* Remove all editors, commenters, and viewers who are not the owner from the
+ * file. Set permissions to only people explicitly added can access. Then, move
+ * the file to the trash.
  */
-function removeOldFiles(folderId, afterDaysElapsed) {
-  var MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
-  var now = new Date();
+function removeAccess(file) {
+  const owner = file.getOwner();
+  const editors = file.getEditors();
+  const viewers = file.getViewers();
 
-  var folder = DriveApp.getFolderById(folderId);
-  var files = folder.getFiles();
+  // Revoke permissions from people who were explicitly added
+  editors
+      .concat(viewers)
+      .filter(user => user !== owner)
+      .forEach(user => file.revokePermissions(user));
+
+  // Revoke "anyone with the link" permissions
+  file.setSharing(DriveApp.Access.ANYONE, DriveApp.Permission.NONE);
+
+  // Move to trash (does not delete the file permanently)
+  file.setTrashed(true);
+  Logger.log("Removed file " + file.getName());
+}
+
+/* Generator: Yield all files older than `afterDaysElapsed` days inside the
+ * folder specified by `folderId`.
+ */
+function* getOldFiles(folderId, afterDaysElapsed) {
+  const MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
+  const now = new Date();
+
+  const folder = DriveApp.getFolderById(folderId);
+  const files = folder.getFiles();
   while (files.hasNext()) {
     file = files.next();
-    var dateCreated = file.getDateCreated();
-    var daysElapsed = (now.getTime() - dateCreated.getTime()) / MILLIS_PER_DAY;
+    const dateCreated = file.getDateCreated();
+    const daysElapsed = (now.getTime() - dateCreated.getTime()) / MILLIS_PER_DAY;
     if (daysElapsed >= afterDaysElapsed) {
-      file.setTrashed(true);
-      Logger.log("Removed file " + file.getName());
+      yield file;
     }
   }
 }
